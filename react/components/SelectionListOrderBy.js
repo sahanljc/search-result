@@ -5,7 +5,7 @@ import classNames from 'classnames'
 import { find, propEq } from 'ramda'
 
 import { withRuntimeContext, Link } from 'vtex.render-runtime'
-import { IconCaret } from 'vtex.dreamstore-icons'
+import { IconCaret } from 'vtex.store-icons'
 
 import searchResult from '../searchResult.css'
 
