@@ -5,7 +5,10 @@ import SearchResultContainer from './components/SearchResultContainer'
 import { SORT_OPTIONS } from './OrderBy'
 import LocalQuery from './components/LocalQuery'
 import { LAYOUT_MODE } from './components/LayoutModeSwitcher'
-import GapPaddingTypes, { getGapPaddingNames, getGapPaddingValues } from './constants/paddingEnum'
+import GapPaddingTypes, {
+  getGapPaddingNames,
+  getGapPaddingValues,
+} from './constants/paddingEnum'
 
 const PAGINATION_TYPES = ['show-more', 'infinite-scroll']
 const DEFAULT_MAX_ITEMS_PER_PAGE = 10
@@ -18,7 +21,6 @@ export default class SearchResultQueryLoader extends Component {
   static defaultProps = {
     orderBy: SORT_OPTIONS[0].value,
     gap: GapPaddingTypes.SMALL.value,
-    rest: '',
   }
 
   static uiSchema = {
@@ -32,7 +34,8 @@ export default class SearchResultQueryLoader extends Component {
 
   render() {
     const { querySchema } = this.props
-    return !this.props.searchQuery || (querySchema && querySchema.enableCustomQuery) ? (
+    return !this.props.searchQuery ||
+      (querySchema && querySchema.enableCustomQuery) ? (
       <LocalQuery
         {...this.props}
         {...querySchema}
@@ -47,38 +50,34 @@ export default class SearchResultQueryLoader extends Component {
 SearchResultQueryLoader.getSchema = props => {
   const querySchema = !props.searchQuery
     ? {
-      querySchema: {
-        title: 'editor.search-result.query',
-        description: 'editor.search-result.query.description',
-        type: 'object',
-        properties: {
-          maxItemsPerPage: {
-            title: 'editor.search-result.query.maxItemsPerPage',
-            type: 'number',
-            default: DEFAULT_MAX_ITEMS_PER_PAGE,
-          },
-          queryField: {
-            title: 'Query',
-            type: 'string',
-          },
-          mapField: {
-            title: 'Map',
-            type: 'string',
-          },
-          restField: {
-            title: 'Other Query Strings',
-            type: 'string',
-          },
-          orderByField: {
-            title: 'Order by field',
-            type: 'string',
-            default: SORT_OPTIONS[1].value,
-            enum: SORT_OPTIONS.map(opt => opt.value),
-            enumNames: SORT_OPTIONS.map(opt => opt.label),
+        querySchema: {
+          title: 'editor.search-result.query',
+          description: 'editor.search-result.query.description',
+          type: 'object',
+          properties: {
+            maxItemsPerPage: {
+              title: 'editor.search-result.query.maxItemsPerPage',
+              type: 'number',
+              default: DEFAULT_MAX_ITEMS_PER_PAGE,
+            },
+            queryField: {
+              title: 'Query',
+              type: 'string',
+            },
+            mapField: {
+              title: 'Map',
+              type: 'string',
+            },
+            orderByField: {
+              title: 'Order by field',
+              type: 'string',
+              default: SORT_OPTIONS[1].value,
+              enum: SORT_OPTIONS.map(opt => opt.value),
+              enumNames: SORT_OPTIONS.map(opt => opt.label),
+            },
           },
         },
-      },
-    }
+      }
     : {}
 
   return {
