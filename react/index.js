@@ -5,10 +5,7 @@ import SearchResultContainer from './components/SearchResultContainer'
 import { SORT_OPTIONS } from './OrderBy'
 import LocalQuery from './components/LocalQuery'
 import { LAYOUT_MODE } from './components/LayoutModeSwitcher'
-import GapPaddingTypes, {
-  getGapPaddingNames,
-  getGapPaddingValues,
-} from './constants/paddingEnum'
+import QueryContext from './components/QueryContext'
 
 const PAGINATION_TYPES = ['show-more', 'infinite-scroll']
 const DEFAULT_MAX_ITEMS_PER_PAGE = 10
@@ -20,7 +17,6 @@ const DEFAULT_MAX_ITEMS_PER_PAGE = 10
 export default class SearchResultQueryLoader extends Component {
   static defaultProps = {
     orderBy: SORT_OPTIONS[0].value,
-    gap: GapPaddingTypes.SMALL.value,
   }
 
   static uiSchema = {
@@ -39,10 +35,16 @@ export default class SearchResultQueryLoader extends Component {
       <LocalQuery
         {...this.props}
         {...querySchema}
-        render={props => <SearchResultContainer {...props} />}
+        render={props => (
+          <QueryContext.Provider value={props.searchQuery.variables}>
+            <SearchResultContainer {...props} />
+          </QueryContext.Provider>
+        )}
       />
     ) : (
-      <SearchResultContainer {...this.props} />
+      <QueryContext.Provider value={this.props.searchQuery.variables}>
+        <SearchResultContainer {...this.props} />
+      </QueryContext.Provider>
     )
   }
 }
@@ -161,14 +163,6 @@ SearchResultQueryLoader.getSchema = props => {
             },
           },
         },
-      },
-      gap: {
-        title: 'editor.search-result.gap.title',
-        type: 'string',
-        enum: getGapPaddingValues(),
-        enumNames: getGapPaddingNames(),
-        default: GapPaddingTypes.SMALL.value,
-        isLayout: true,
       },
       summary: {
         title: 'editor.search-result.summary.title',
